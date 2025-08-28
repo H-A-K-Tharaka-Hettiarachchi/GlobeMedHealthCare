@@ -6,15 +6,11 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * JDBC implementation of the PatientDAO interface.
  */
 public class PatientDAOImpl implements PatientDAO {
-
-    private static final Logger logger = LoggerFactory.getLogger(PatientDAOImpl.class);
 
     private static final String SELECT_PATIENT_BY_ID = "SELECT * FROM patient WHERE id = ?";
     private static final String SELECT_ALL_PATIENTS = "SELECT * FROM patient";
@@ -33,7 +29,8 @@ public class PatientDAOImpl implements PatientDAO {
                 }
             }
         } catch (SQLException e) {
-            logger.error("Error finding patient by id: {}", id, e);
+            System.err.println("Error finding patient by id: " + id);
+            e.printStackTrace();
         }
         return Optional.empty();
     }
@@ -48,7 +45,8 @@ public class PatientDAOImpl implements PatientDAO {
                 patients.add(mapRowToPatient(rs));
             }
         } catch (SQLException e) {
-            logger.error("Error finding all patients", e);
+            System.err.println("Error finding all patients");
+            e.printStackTrace();
         }
         return patients;
     }
@@ -72,7 +70,8 @@ public class PatientDAOImpl implements PatientDAO {
                 return true;
             }
         } catch (SQLException e) {
-            logger.error("Error saving patient: {}", patient, e);
+            System.err.println("Error saving patient: " + patient);
+            e.printStackTrace();
         }
         return false;
     }
@@ -87,7 +86,8 @@ public class PatientDAOImpl implements PatientDAO {
             pstmt.setInt(11, patient.getId());
             return pstmt.executeUpdate() > 0;
         } catch (SQLException e) {
-            logger.error("Error updating patient: {}", patient, e);
+            System.err.println("Error updating patient: " + patient);
+            e.printStackTrace();
         }
         return false;
     }
@@ -99,7 +99,8 @@ public class PatientDAOImpl implements PatientDAO {
             pstmt.setInt(1, id);
             return pstmt.executeUpdate() > 0;
         } catch (SQLException e) {
-            logger.error("Error deleting patient by id: {}", id, e);
+            System.err.println("Error deleting patient by id: " + id);
+            e.printStackTrace();
         }
         return false;
     }

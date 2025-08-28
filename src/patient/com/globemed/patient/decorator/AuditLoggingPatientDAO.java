@@ -4,16 +4,12 @@ import com.globemed.patient.dao.PatientDAO;
 import com.globemed.patient.model.Patient;
 import java.util.List;
 import java.util.Optional;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Decorator for PatientDAO that adds audit logging to each operation.
  * This is an implementation of the Decorator pattern.
  */
 public class AuditLoggingPatientDAO implements PatientDAO {
-
-    private static final Logger logger = LoggerFactory.getLogger(AuditLoggingPatientDAO.class);
 
     private final PatientDAO wrappedDao;
     // In a real application, you would get the current user from a security context.
@@ -25,56 +21,56 @@ public class AuditLoggingPatientDAO implements PatientDAO {
 
     @Override
     public Optional<Patient> findById(int id) {
-        logger.info("[AUDIT] User '{}' is attempting to find patient by id: {}", currentUser, id);
+        System.out.println(String.format("[AUDIT] User '%s' is attempting to find patient by id: %d", currentUser, id));
         Optional<Patient> patient = wrappedDao.findById(id);
         if (patient.isPresent()) {
-            logger.info("[AUDIT] User '{}' successfully found patient: {}", currentUser, patient.get());
+            System.out.println(String.format("[AUDIT] User '%s' successfully found patient: %s", currentUser, patient.get()));
         } else {
-            logger.warn("[AUDIT] User '{}' failed to find patient with id: {}", currentUser, id);
+            System.out.println(String.format("[AUDIT] User '%s' failed to find patient with id: %d", currentUser, id));
         }
         return patient;
     }
 
     @Override
     public List<Patient> findAll() {
-        logger.info("[AUDIT] User '{}' is attempting to find all patients.", currentUser);
+        System.out.println(String.format("[AUDIT] User '%s' is attempting to find all patients.", currentUser));
         List<Patient> patients = wrappedDao.findAll();
-        logger.info("[AUDIT] User '{}' found {} patients.", currentUser, patients.size());
+        System.out.println(String.format("[AUDIT] User '%s' found %d patients.", currentUser, patients.size()));
         return patients;
     }
 
     @Override
     public boolean save(Patient patient) {
-        logger.info("[AUDIT] User '{}' is attempting to save a new patient: {}", currentUser, patient);
+        System.out.println(String.format("[AUDIT] User '%s' is attempting to save a new patient: %s", currentUser, patient));
         boolean result = wrappedDao.save(patient);
         if (result) {
-            logger.info("[AUDIT] User '{}' successfully saved new patient with generated id: {}", currentUser, patient.getId());
+            System.out.println(String.format("[AUDIT] User '%s' successfully saved new patient with generated id: %d", currentUser, patient.getId()));
         } else {
-            logger.error("[AUDIT] User '{}' failed to save patient: {}", currentUser, patient);
+            System.err.println(String.format("[AUDIT] User '%s' failed to save patient: %s", currentUser, patient));
         }
         return result;
     }
 
     @Override
     public boolean update(Patient patient) {
-        logger.info("[AUDIT] User '{}' is attempting to update patient with id {}: {}", currentUser, patient.getId(), patient);
+        System.out.println(String.format("[AUDIT] User '%s' is attempting to update patient with id %d: %s", currentUser, patient.getId(), patient));
         boolean result = wrappedDao.update(patient);
         if (result) {
-            logger.info("[AUDIT] User '{}' successfully updated patient with id: {}", currentUser, patient.getId());
+            System.out.println(String.format("[AUDIT] User '%s' successfully updated patient with id: %d", currentUser, patient.getId()));
         } else {
-            logger.error("[AUDIT] User '{}' failed to update patient with id: {}", currentUser, patient.getId());
+            System.err.println(String.format("[AUDIT] User '%s' failed to update patient with id: %d", currentUser, patient.getId()));
         }
         return result;
     }
 
     @Override
     public boolean deleteById(int id) {
-        logger.info("[AUDIT] User '{}' is attempting to delete patient by id: {}", currentUser, id);
+        System.out.println(String.format("[AUDIT] User '%s' is attempting to delete patient by id: %d", currentUser, id));
         boolean result = wrappedDao.deleteById(id);
         if (result) {
-            logger.info("[AUDIT] User '{}' successfully deleted patient with id: {}", currentUser, id);
+            System.out.println(String.format("[AUDIT] User '%s' successfully deleted patient with id: %d", currentUser, id));
         } else {
-            logger.error("[AUDIT] User '{}' failed to delete patient with id: {}", currentUser, id);
+            System.err.println(String.format("[AUDIT] User '%s' failed to delete patient with id: %d", currentUser, id));
         }
         return result;
     }

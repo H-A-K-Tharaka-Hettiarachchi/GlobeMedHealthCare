@@ -142,7 +142,7 @@ public class AdminLogin extends javax.swing.JFrame {
         // FIXME: For better security, the password field should be a JPasswordField.
         String password = jTextField2.getText();
 
-        if (authController.loginAdmin(username, password)) {
+        if (authController.login(username, password)) {
             // On successful login, open the dashboard and close this window
             AdminDashboard dashboard = new AdminDashboard(this);
             dashboard.setVisible(true);

@@ -1,35 +1,42 @@
 package com.globemed.staff;
 
 import com.globemed.db.DatabaseConnection;
+import com.globemed.staff.dao.RoleDAO;
+import com.globemed.staff.dao.RoleDAOImpl;
+import com.globemed.staff.model.Role;
+import com.globemed.staff.security.SecurityContext;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.Optional;
 
 /**
  * Controller for handling authentication logic.
  */
 public class AuthController {
 
-    private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
+    private final RoleDAO roleDAO;
+
+    public AuthController() {
+        this.roleDAO = new RoleDAOImpl();
+    }
 
     /**
-     * Authenticates an admin user against the database.
+     * Authenticates a user against the `staff` table.
+     * On success, it populates the SecurityContext with the user's role and permissions.
      *
      * @param username The username.
      * @param password The password.
      * @return true if the credentials are valid, false otherwise.
      */
-    public boolean loginAdmin(String username, String password) {
-        // NOTE: This currently uses the deprecated `admin` table.
-        // It should be refactored to use the `staff` table with role checks.
-        // Also, passwords should be hashed and salted, not stored in plain text.
-        String sql = "SELECT * FROM admin WHERE username = ? AND password = ?";
+    public boolean login(String username, String password) {
+        // FIXME: Passwords should be hashed and salted, not stored in plain text.
+        // This query is for demonstration purposes only.
+        String sql = "SELECT role_id FROM staff WHERE username = ? AND password = ? AND status_id = 1"; // Assuming status_id 1 is 'Active'
 
         if (username == null || username.trim().isEmpty() || password == null || password.isEmpty()) {
-            logger.warn("Login attempt with empty username or password.");
+            System.out.println("Login attempt with empty username or password.");
             return false;
         }
 
@@ -41,19 +48,36 @@ public class AuthController {
 
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
-                    logger.info("Admin user '{}' logged in successfully.", username);
-                    return true;
+                    int roleId = rs.getInt("role_id");
+                    System.out.println(String.format("User '%s' authenticated successfully with role_id: %d", username, roleId));
+
+                    // Now, fetch the role and its permissions
+                    Optional<Role> roleOpt = roleDAO.findRoleById(roleId);
+                    if (roleOpt.isPresent()) {
+                        SecurityContext.setAuthentication(username, roleOpt.get());
+                        System.out.println(String.format("SecurityContext populated for user '%s' with role '%s'.", username, roleOpt.get().getName()));
+                        return true;
+                    } else {
+                        System.err.println("Could not find role definition for role_id: " + roleId + ". Login failed.");
+                        return false;
+                    }
                 } else {
-                    logger.warn("Failed login attempt for admin user '{}'.", username);
+                    System.out.println("Failed login attempt for user '" + username + "'.");
                     return false;
                 }
             }
         } catch (SQLException e) {
-            logger.error("Database error during admin login for user '{}'.", username, e);
+            System.err.println("Database error during login for user '" + username + "'.");
+            e.printStackTrace();
             return false;
         }
     }
 
-    // TODO: Implement login methods for other roles (Doctor, Nurse, etc.)
-    // These methods should query the `staff` table and check the `role_id`.
+    /**
+     * Logs the current user out by clearing the security context.
+     */
+    public void logout() {
+        System.out.println("User '" + SecurityContext.getUsername() + "' logging out.");
+        SecurityContext.clearAuthentication();
+    }
 }

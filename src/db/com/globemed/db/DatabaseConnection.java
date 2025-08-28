@@ -3,16 +3,12 @@ package com.globemed.db;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Manages the connection to the MySQL database.
  * This class follows the Singleton pattern to ensure only one connection instance is created.
  */
 public class DatabaseConnection {
-
-    private static final Logger logger = LoggerFactory.getLogger(DatabaseConnection.class);
 
     private static final String DB_URL = "jdbc:mysql://localhost:3306/globemed_healthcare";
     // FIXME: Credentials should be loaded from a secure configuration file, not hardcoded.
@@ -39,12 +35,12 @@ public class DatabaseConnection {
                 // The old `com.mysql.jdbc.Driver` is deprecated.
                 Class.forName("com.mysql.cj.jdbc.Driver");
                 connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
-                logger.info("Successfully connected to the database.");
+                System.out.println("Successfully connected to the database.");
             } catch (ClassNotFoundException e) {
-                logger.error("MySQL JDBC Driver not found.", e);
+                System.err.println("MySQL JDBC Driver not found.");
                 throw new SQLException("MySQL JDBC Driver not found.", e);
             } catch (SQLException e) {
-                logger.error("Failed to connect to the database.", e);
+                System.err.println("Failed to connect to the database.");
                 throw e; // Re-throw the exception to be handled by the caller
             }
         }
@@ -58,9 +54,9 @@ public class DatabaseConnection {
         if (connection != null) {
             try {
                 connection.close();
-                logger.info("Database connection closed.");
+                System.out.println("Database connection closed.");
             } catch (SQLException e) {
-                logger.error("Failed to close the database connection.", e);
+                System.err.println("Failed to close the database connection.");
             }
         }
     }
