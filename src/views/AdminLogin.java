@@ -4,6 +4,9 @@
  */
 package views;
 
+import com.globemed.staff.AuthController;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author KSHPRIME
@@ -12,10 +15,12 @@ public class AdminLogin extends javax.swing.JFrame {
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(AdminLogin.class.getName());
 
-    private GlobeMedHealthcare previousWindow;
+    private final GlobeMedHealthcare previousWindow;
+    private final AuthController authController;
     
     public AdminLogin(GlobeMedHealthcare previousWindow) {
         this.previousWindow = previousWindow;
+        this.authController = new AuthController();
         initComponents();
 
        
@@ -62,6 +67,11 @@ public class AdminLogin extends javax.swing.JFrame {
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/logo/GlobeMedLogoNBG_125px.png"))); // NOI18N
 
         jButton1.setText("Log In");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                loginButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -126,6 +136,25 @@ public class AdminLogin extends javax.swing.JFrame {
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
 
     }//GEN-LAST:event_formWindowClosed
+
+    private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {
+        String username = jTextField1.getText();
+        // FIXME: For better security, the password field should be a JPasswordField.
+        String password = jTextField2.getText();
+
+        if (authController.loginAdmin(username, password)) {
+            // On successful login, open the dashboard and close this window
+            AdminDashboard dashboard = new AdminDashboard(this);
+            dashboard.setVisible(true);
+            this.dispose(); // Close the login window
+        } else {
+            // On failed login, show an error message
+            JOptionPane.showMessageDialog(this,
+                "Invalid username or password.",
+                "Login Failed",
+                JOptionPane.ERROR_MESSAGE);
+        }
+    }
 
     /**
      * @param args the command line arguments
