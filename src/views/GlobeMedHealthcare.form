@@ -80,16 +80,25 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Doctor"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="goToDoctorActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="goToNurse">
       <Properties>
         <Property name="text" type="java.lang.String" value="Nurse"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="goToNurseActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="goToPharmacist">
       <Properties>
         <Property name="text" type="java.lang.String" value="Pharmacist"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="goToPharmacistActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="goToReceptionist">
       <Properties>
@@ -103,6 +112,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Insurance Provider"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="goToInsuranceProviderActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="logo">
       <Properties>

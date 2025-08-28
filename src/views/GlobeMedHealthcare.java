@@ -1,22 +1,18 @@
 package views;
 
-
 import com.formdev.flatlaf.intellijthemes.FlatCyanLightIJTheme;
 import views.AdminLogin;
-
-
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-
 /**
  *
  * @author KSHPRIME
  */
 public class GlobeMedHealthcare extends javax.swing.JFrame {
-    
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(GlobeMedHealthcare.class.getName());
 
     /**
@@ -56,10 +52,25 @@ public class GlobeMedHealthcare extends javax.swing.JFrame {
         });
 
         goToDoctor.setText("Doctor");
+        goToDoctor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                goToDoctorActionPerformed(evt);
+            }
+        });
 
         goToNurse.setText("Nurse");
+        goToNurse.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                goToNurseActionPerformed(evt);
+            }
+        });
 
         goToPharmacist.setText("Pharmacist");
+        goToPharmacist.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                goToPharmacistActionPerformed(evt);
+            }
+        });
 
         goToReceptionist.setText("Receptionist");
         goToReceptionist.addActionListener(new java.awt.event.ActionListener() {
@@ -69,6 +80,11 @@ public class GlobeMedHealthcare extends javax.swing.JFrame {
         });
 
         goToInsuranceProvider.setText("Insurance Provider");
+        goToInsuranceProvider.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                goToInsuranceProviderActionPerformed(evt);
+            }
+        });
 
         logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/logo/GlobeMedLogoNBG.png"))); // NOI18N
 
@@ -121,25 +137,48 @@ public class GlobeMedHealthcare extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void goToAdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_goToAdminActionPerformed
-       AdminLogin adminLogin =  new AdminLogin(this);
-       adminLogin.setVisible(true);
-       this.setVisible(false);
+        AdminLogin adminLogin = new AdminLogin(this);
+        adminLogin.setVisible(true);
+        this.setVisible(false);
     }//GEN-LAST:event_goToAdminActionPerformed
 
     private void goToReceptionistActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_goToReceptionistActionPerformed
-       ReceptionLogin receptionLogin =  new ReceptionLogin(this);
-       receptionLogin.setVisible(true);
-       this.setVisible(false);
+        ReceptionLogin receptionLogin = new ReceptionLogin(this);
+        receptionLogin.setVisible(true);
+        this.setVisible(false);
     }//GEN-LAST:event_goToReceptionistActionPerformed
 
-    
+    private void goToDoctorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_goToDoctorActionPerformed
+        DoctorLogin doctorLogin = new DoctorLogin(this);
+        doctorLogin.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_goToDoctorActionPerformed
+
+    private void goToNurseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_goToNurseActionPerformed
+        NurseLogin nurseLogin = new NurseLogin(this);
+        nurseLogin.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_goToNurseActionPerformed
+
+    private void goToPharmacistActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_goToPharmacistActionPerformed
+        PharmacistLogin pharmacistLogin = new PharmacistLogin(this);
+        pharmacistLogin.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_goToPharmacistActionPerformed
+
+    private void goToInsuranceProviderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_goToInsuranceProviderActionPerformed
+        InsuranceProviderLogin insuranceProviderLogin = new InsuranceProviderLogin(this);
+        insuranceProviderLogin.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_goToInsuranceProviderActionPerformed
+
     public static void main(String args[]) {
-     
+
         FlatCyanLightIJTheme.setup();
-        
-        GlobeMedHealthcare globeMedHealthcare =  new GlobeMedHealthcare();
+
+        GlobeMedHealthcare globeMedHealthcare = new GlobeMedHealthcare();
         globeMedHealthcare.setVisible(true);
-      
+
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
